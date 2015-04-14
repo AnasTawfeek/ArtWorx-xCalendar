@@ -1,0 +1,311 @@
+﻿<html xmlns:mso="urn:schemas-microsoft-com:office:office" xmlns:msdt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+<head>
+	<title>xCalender</title>
+	<!--[if gte mso 9]><xml>
+	<mso:CustomDocumentProperties>
+	<mso:TemplateHidden msdt:dt="string">0</mso:TemplateHidden>
+	<mso:MasterPageDescription msdt:dt="string">This is the default Control Display Template that will list the items. It does not allow the user to page through items.</mso:MasterPageDescription>
+	<mso:ContentTypeId msdt:dt="string">0x0101002039C03B61C64EC4A04F5361F385106601</mso:ContentTypeId>
+	<mso:TargetControlType msdt:dt="string">;#Content Web Parts;#</mso:TargetControlType>
+	<mso:HtmlDesignAssociated msdt:dt="string">1</mso:HtmlDesignAssociated>
+	<mso:HtmlDesignStatusAndPreview msdt:dt="string">http://xportal-sp:4444/_catalogs/masterpage/Display Templates/Content Web Parts/NewTemplates/xCalendar/Control_xCalendar.html, Conversion successful.</mso:HtmlDesignStatusAndPreview>
+	<mso:HtmlDesignConversionSucceeded msdt:dt="string">True</mso:HtmlDesignConversionSucceeded>
+	<mso:HtmlDesignFromMaster msdt:dt="string"></mso:HtmlDesignFromMaster>
+</mso:CustomDocumentProperties>
+	</xml><![endif]-->
+</head>
+<body>
+	<script>
+		$includeLanguageScript(this.url, "~sitecollection/_catalogs/masterpage/xPortal/style library/common/styles/xCalendar/calendar.css");
+		$includeLanguageScript(this.url, "~sitecollection/_catalogs/masterpage/xPortal/style library/common/styles/xLoader/xloader.css");
+	</script>
+	<!--
+			Warning: Do not try to add HTML to this section. Only the contents of the first <div>
+			inside the <body> tag will be used while executing Display Template code. Any HTML that
+			you add to this section will NOT become part of your Display Template.
+	-->
+	<!--
+		Use the div below to author your Display Template. Here are some things to keep in mind:
+		* Surround any JavaScript logic as shown below using a "pound underscore" (#_ ... _#) token
+		inside a comment.
+
+		* Use the values assigned to your variables using an "underscore pound equals"
+		(_#= ... =#_) token.
+	-->
+	<div>
+		<!--#_ 
+			if (!$isNull(ctx.ClientControl) &&
+				!$isNull(ctx.ClientControl.shouldRenderControl) &&
+				!ctx.ClientControl.shouldRenderControl())
+			{
+				return "";
+			}
+			ctx.ListDataJSONGroupsKey = "ResultTables";
+			var $noResults = Srch.ContentBySearch.getControlTemplateEncodedNoResultsMessage(ctx.ClientControl);
+
+			var noResultsClassName = "ms-srch-result-noResults";
+
+			var ListRenderRenderWrapper = function(itemRenderResult, inCtx, tpl)
+			{
+				var iStr = [];
+				iStr.push('<li class="news-item">');
+				iStr.push(itemRenderResult);
+				iStr.push('</li>');
+				return iStr.join('');
+			}
+			ctx['ItemRenderWrapper'] = ListRenderRenderWrapper;
+
+
+			if (!$isNull(ctx.ClientControl) &&
+				!$isNull(ctx.ClientControl.shouldRenderControl) &&
+				!ctx.ClientControl.shouldRenderControl())
+			{
+				return "";
+			}
+			ctx.ListDataJSONGroupsKey = "ResultTables";
+			var siteURL = SP.PageContextInfo.get_siteServerRelativeUrl();
+
+
+			//#################################
+			// Start: Fetch Calendar Events
+			//#################################
+			var eventsObj = ctx.ListData.ResultTables[0].ResultRows;
+			var events_source = [];
+			$.each(eventsObj, function(index){
+				var startDate = new Date(this.xPortalStartDate);
+				var startDateMS = startDate.getTime();
+				var endDate = new Date(this.xPortalEndDate);
+				var endDateMS = endDate.getTime();
+				events_source[index] = {
+					'id': this.DocId,
+					'title': this.xPortalEventCategoryOWSCHCS + ' - ' + this.Title,
+					'url': this.Path,
+					'class': 'event-info',
+					'start': startDateMS,
+					'end': endDateMS
+				};
+			});
+
+			//#################################
+			// End: Fetch Calendar Events
+			//#################################
+
+
+
+			//#################################
+			// Start: Fetch Calendar Settings
+			//#################################
+			var properties = "";
+			var settings = {};
+			var dtd = ctx['DisplayTemplateData'];
+			if (!Srch.U.n(dtd) && !Srch.U.n(dtd['ManagedPropertyMapping'])) {
+				properties = dtd['ManagedPropertyMapping'];
+			}
+			var cc = ctx['ClientControl'];
+			if (!Srch.U.n(cc)) {
+				if (!Srch.U.n(cc.get_propertyMappings)) {
+					var mappings = cc.get_propertyMappings();
+					if (!Srch.U.n(mappings) && !Srch.U.w(mappings)) {
+						properties = Srch.Result.parsePropertyMappingsString(mappings);
+					}
+				}
+			}
+			for (var key in properties) {
+			  if (properties.hasOwnProperty(key)) {
+				settingKey = key.replace(/\s+/, "");
+				settingVal = properties[key][0];
+				settings[settingKey] = settingVal;
+			  }
+			}
+			//#################################
+			// End: Fetch Calendar Settings
+			//#################################
+
+			//#################################
+			// Start: Cleaning Settings
+			//#################################
+				if(settings['xCalendarModal'] === ''){
+					settings['xCalendarModal'] = null;
+				}
+
+				if(settings['xCalendarModalTitle'] === ''){
+					settings['xCalendarModalTitle'] = null;
+				}
+				settings['xCalendarDayStartTime'] = settings['xCalendarDayStartTime'].replace("\|", ":");
+				settings['xCalendarDayEndTime'] = settings['xCalendarDayEndTime'].replace("\|", ":");
+				settings['xCalendarDaySplitTime'] = settings['xCalendarDaySplitTime'].replace("\|", ":");
+			//#################################
+			// End: Cleaning Settings
+			//#################################
+
+			//#################################
+			// Start: Preloader
+			//#################################
+			var preloaderTmpl = {
+				AudioWave: '<div id="xLoader"><div class="audio-wave"><span></span><span></span><span></span><span></span><span></span></div></div>',
+
+				CircularSquare: '<div id="xLoader"><div class="circular-square"><span></span><span></span><span></span><span></span></div></div>',
+
+				CrossingShapes: '<div id="xLoader"><div class="crossing-shapes"></div></div>',
+
+				GlisteningWindow: '<div id="xLoader"><div class="glistening-window"><span></span><span></span><span></span><span></span></div></div>',
+
+				GoogleSpin: '<div id="xLoader"><div class="google-spin-wrapper"><div class="google-spin"></div></div></div>',
+
+				SpinningDisc: '<div id="xLoader"><div class="spinning-disc"></div></div>',
+
+				TheSnake: '<div id="xLoader"><div class="the-snake"><span></span><span></span><span></span><span></span><span></span></div></div>'
+			}
+			//#################################
+			// End: Preloader
+			//#################################
+			
+		_#-->
+		<div id="calendarContainar">
+			<div class="form-inline xcalendar-controls" style="width:100%;">
+				<div class="button-group" style="float:left;">
+					<span class="btn btn-primary" data-calendar-nav="prev"><i class="fa fa-chevron-left"></i></span>
+					<span class="btn btn-warning" data-calendar-nav="today">Today</span>
+					<span class="btn btn-primary" data-calendar-nav="next"><i class="fa fa-chevron-right"></i></span>
+				</div>
+				<div class="button-group" style="float:right;">
+					<span class="btn btn-success" data-calendar-view="year">Year</span>
+					<span class="btn btn-success" data-calendar-view="month">Month</span>
+					<span class="btn btn-success" data-calendar-view="week">Week</span>
+					<span class="btn btn-success" data-calendar-view="day">Day</span>
+				</div>
+			</div>
+			<div class="clearfix"></div>
+			<div id="calendar">
+				_#= ctx.RenderGroups(ctx) =#_
+			</div>
+		</div>
+				
+		<!--#_		
+		
+		AddPostRenderCallback(ctx, function(){
+			console.error(settings);
+			if(settings['xCalendarxLoader'] === 'true'){
+				var calendarDiv = $('#calendarContainar');
+				calendarDiv.append(preloaderTmpl[settings['xCalendarxLoaderType']]);
+			}
+
+			var langs = {
+					1025: 'ar-SA',
+					1026: 'bg-BG',
+					1031: 'de-DE',
+					1032: 'el-GR',
+					1033: '',
+					1036: 'fr-FR',
+					1038: 'hu-HU',
+					1040: 'it-IT',
+					1043: 'nl-NL',
+					1045: 'pl-PL',
+					1046: 'pt-BR',
+					1048: 'ro-RO',
+					1049: 'ru-RU',
+					1051: 'sk-SR',
+					1053: 'sv-SE',
+					1057: 'id-ID',
+					2058: 'es-MX',
+					3082: 'es-ES',
+					9226: 'es-CO',
+				};
+			var langId = _spPageContextInfo.currentLanguage;
+			var langCode = langs[langId];
+			
+			$.getScript(siteURL + "_catalogs/masterpage/xPortal/style library/common/scripts/xCalendar/underscore-min.js", function(){
+				$.getScript(siteURL + "_catalogs/masterpage/xPortal/style library/common/scripts/xCalendar/jstz.min.js", function(){
+						$.getScript(siteURL + "_catalogs/masterpage/xPortal/style library/common/scripts/xCalendar/language/"+langCode+".js");
+					$.getScript(siteURL + "_catalogs/masterpage/xPortal/style library/common/scripts/xCalendar/calendar.min.js", function(){
+						var options = {
+							events_source: function(){
+								return events_source;
+							},
+							view: settings['xCalendarInitialView'],
+							day: settings['xCalendarInitialDate'],
+							time_start:         settings['xCalendarDayStartTime'],
+							time_end:           settings['xCalendarDayEndTime'],
+							time_split:         settings['xCalendarDaySplitTime'],
+							tmpl_path: siteURL + '_catalogs/masterpage/xPortal/style library/common/scripts/xCalendar/tmpls/',
+							tmpl_cache: false,
+							onAfterEventsLoad: function(events) {
+								if(!events) {
+									return;
+								}
+								var list = $('#eventlist');
+								list.html('');
+
+								$.each(events, function(key, val) {
+									$(document.createElement('li'))
+										.html('<a href="' + val.url + '">' + val.title + '</a>')
+										.appendTo(list);
+								});
+							},
+							onAfterViewLoad: function(view) {
+								if(settings['xCalendarxLoader'] === 'true'){
+									$('#calendarContainar #xLoader').slideUp(1000);
+								}
+								$('#calendarContainar').css('min-hight', 'auto');
+							},
+							classes: {
+								months: {
+									inmonth:  settings['xCalendarClassMonthsInMonth'],
+									outmonth: settings['xCalendarClassMonthsOutMonth'],
+									saturday: settings['xCalendarClassMonthsSaturday'],
+									sunday:   settings['xCalendarClassMonthsSunday'],
+									holidays: settings['xCalendarClassMonthsHolidays'],
+									today:    settings['xCalendarClassMonthsToday']
+								},
+								week:   {
+									workday:  settings['xCalendarClassWeeksWorkday'],
+									saturday: settings['xCalendarClassWeeksSaturday'],
+									sunday:   settings['xCalendarClassWeeksSunday'],
+									holidays: settings['xCalendarClassWeeksHolidays'],
+									today:    settings['xCalendarClassWeeksToday']
+								}
+							},
+							modal: settings['xCalendarModal'],
+							modal_type: settings['xCalendarModalType'],
+						};
+
+						var calendar = $('#calendar').calendar(options);
+
+						$('.xcalendar-controls span[data-calendar-nav]').each(function() {
+							var $this = $(this);
+							$this.click(function() {
+								calendar.navigate($this.data('calendar-nav'));
+							});
+						});
+
+						$('.xcalendar-controls span[data-calendar-view]').each(function() {
+							var $this = $(this);
+							$this.click(function() {
+								calendar.view($this.data('calendar-view'));
+							});
+						});
+
+						$('#events-modal .modal-header, #events-modal .modal-footer').click(function(e){
+							//e.preventDefault();
+							//e.stopPropagation();
+						});
+					});
+					
+				});
+			});
+		});		
+		_#-->
+		
+		<!--#_
+			if (ctx.ClientControl.get_shouldShowNoResultMessage()){
+		_#-->
+		<div class="_#= noResultsClassName =#_ error">
+			_#= $noResults =#_</div>
+		<!--#_
+			}
+		_#-->
+		<div class="clear">
+		</div>
+	</div>
+</body>
+</html>
