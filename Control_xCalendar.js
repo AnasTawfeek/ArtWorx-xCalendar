@@ -1,10 +1,10 @@
 /* This file is currently associated to an HTML file of the same name and is drawing content from it.  Until the files are disassociated, you will not be able to move, delete, rename, or make any other changes to this file. */
 
-function DisplayTemplate_a0b9c0bf42c94724a7385f4aabcee93d(ctx) {
+function DisplayTemplate_0b2c32adbe524ac591ffd18daf9ee7b5(ctx) {
   var ms_outHtml=[];
   var cachePreviousTemplateData = ctx['DisplayTemplateData'];
   ctx['DisplayTemplateData'] = new Object();
-  DisplayTemplate_a0b9c0bf42c94724a7385f4aabcee93d.DisplayTemplateData = ctx['DisplayTemplateData'];
+  DisplayTemplate_0b2c32adbe524ac591ffd18daf9ee7b5.DisplayTemplateData = ctx['DisplayTemplateData'];
 
   ctx['DisplayTemplateData']['TemplateUrl']='~sitecollection\u002f_catalogs\u002fmasterpage\u002fDisplay Templates\u002fContent Web Parts\u002fNewTemplates\u002fxCalendar\u002fControl_xCalendar.js';
   ctx['DisplayTemplateData']['TemplateType']='Control';
@@ -120,25 +120,16 @@ ms_outHtml.push('',''
 			//#################################
 			// Start: Preloader
 			//#################################
-			var preloaderTmpl = {
-				AudioWave: '<div id="xLoader"><div class="audio-wave"><span></span><span></span><span></span><span></span><span></span></div></div>',
-
-				CircularSquare: '<div id="xLoader"><div class="circular-square"><span></span><span></span><span></span><span></span></div></div>',
-
-				CrossingShapes: '<div id="xLoader"><div class="crossing-shapes"></div></div>',
-
-				GlisteningWindow: '<div id="xLoader"><div class="glistening-window"><span></span><span></span><span></span><span></span></div></div>',
-
-				GoogleSpin: '<div id="xLoader"><div class="google-spin-wrapper"><div class="google-spin"></div></div></div>',
-
-				SpinningDisc: '<div id="xLoader"><div class="spinning-disc"></div></div>',
-
-				TheSnake: '<div id="xLoader"><div class="the-snake"><span></span><span></span><span></span><span></span><span></span></div></div>'
-			}
+			$.getScript(siteURL + "_catalogs/masterpage/xPortal/style library/common/styles/xLoader/xLoaderTmplArray.js", function(){
+				if(settings['xCalendarxLoader'] === 'true'){
+					var calendarDiv = $('#calendarContainar');
+					calendarDiv.append(preloaderTmpl[settings['xCalendarxLoaderType']]);
+				}
+			});
 			//#################################
 			// End: Preloader
 			//#################################
-			
+
 		ms_outHtml.push(''
 ,'		<div id="calendarContainar">'
 ,'			<div class="form-inline xcalendar-controls" style="width:100%;">'
@@ -163,12 +154,6 @@ ms_outHtml.push('',''
 );		
 		
 		AddPostRenderCallback(ctx, function(){
-			console.error(settings);
-			if(settings['xCalendarxLoader'] === 'true'){
-				var calendarDiv = $('#calendarContainar');
-				calendarDiv.append(preloaderTmpl[settings['xCalendarxLoaderType']]);
-			}
-
 			var langs = {
 					1025: 'ar-SA',
 					1026: 'bg-BG',
@@ -291,17 +276,17 @@ ms_outHtml.push('',''
   ctx['DisplayTemplateData'] = cachePreviousTemplateData;
   return ms_outHtml.join('');
 }
-function RegisterTemplate_a0b9c0bf42c94724a7385f4aabcee93d() {
+function RegisterTemplate_0b2c32adbe524ac591ffd18daf9ee7b5() {
 
 if ("undefined" != typeof (Srch) &&"undefined" != typeof (Srch.U) &&typeof(Srch.U.registerRenderTemplateByName) == "function") {
-  Srch.U.registerRenderTemplateByName("~sitecollection\u002f_catalogs\u002fmasterpage\u002fDisplay Templates\u002fContent Web Parts\u002fNewTemplates\u002fxCalendar\u002fControl_xCalendar.js", DisplayTemplate_a0b9c0bf42c94724a7385f4aabcee93d);
+  Srch.U.registerRenderTemplateByName("~sitecollection\u002f_catalogs\u002fmasterpage\u002fDisplay Templates\u002fContent Web Parts\u002fNewTemplates\u002fxCalendar\u002fControl_xCalendar.js", DisplayTemplate_0b2c32adbe524ac591ffd18daf9ee7b5);
 }
 //
 		$includeLanguageScript("~sitecollection\u002f_catalogs\u002fmasterpage\u002fDisplay Templates\u002fContent Web Parts\u002fNewTemplates\u002fxCalendar\u002fControl_xCalendar.js", "~sitecollection/_catalogs/masterpage/xPortal/style library/common/styles/xCalendar/calendar.css");
 		$includeLanguageScript("~sitecollection\u002f_catalogs\u002fmasterpage\u002fDisplay Templates\u002fContent Web Parts\u002fNewTemplates\u002fxCalendar\u002fControl_xCalendar.js", "~sitecollection/_catalogs/masterpage/xPortal/style library/common/styles/xLoader/xloader.css");
 	//
 }
-RegisterTemplate_a0b9c0bf42c94724a7385f4aabcee93d();
+RegisterTemplate_0b2c32adbe524ac591ffd18daf9ee7b5();
 if (typeof(RegisterModuleInit) == "function" && typeof(Srch.U.replaceUrlTokens) == "function") {
-  RegisterModuleInit(Srch.U.replaceUrlTokens("~sitecollection\u002f_catalogs\u002fmasterpage\u002fDisplay Templates\u002fContent Web Parts\u002fNewTemplates\u002fxCalendar\u002fControl_xCalendar.js"), RegisterTemplate_a0b9c0bf42c94724a7385f4aabcee93d);
+  RegisterModuleInit(Srch.U.replaceUrlTokens("~sitecollection\u002f_catalogs\u002fmasterpage\u002fDisplay Templates\u002fContent Web Parts\u002fNewTemplates\u002fxCalendar\u002fControl_xCalendar.js"), RegisterTemplate_0b2c32adbe524ac591ffd18daf9ee7b5);
 }
