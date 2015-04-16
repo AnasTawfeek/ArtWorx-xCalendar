@@ -148,6 +148,10 @@ If you have any ideas or great features you would like to see in the next versio
 
 Also if there is any amazing library you would like to see as display template, Please share with us.
 
+Best Regards,
+
+ArtWorx.
+
 [1]: http://www.eliostruyf.com/adding-configurable-settings-display-templates/
 [2]: https://twitter.com/eliostruyf
 [3]: https://github.com/AnasTawfeek/-ArtWorx-xLoader
