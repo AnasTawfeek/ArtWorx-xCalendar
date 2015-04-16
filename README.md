@@ -71,7 +71,7 @@ $.getScript(siteURL + "_catalogs/masterpage/xPortal/style library/common/scripts
 $.getScript(siteURL + "_catalogs/masterpage/xPortal/style library/common/scripts/xCalendar/calendar.min.js", ...) // line 205
 tmpl_path: siteURL + '_catalogs/masterpage/xPortal/style library/common/scripts/xCalendar/tmpls/', // line 215
 ```
-***
+
 ###Settings
 **Preloader:** (true/false)
 
@@ -121,7 +121,6 @@ Modal handling setting.
 
 Will be used in next version.
 
-***
 
 ###Mapped Properties
 **Title**
@@ -143,8 +142,6 @@ Event end date.
 **Event Category**
 
 Event category
-
-***
 
 ##Up coming versions??
 If you have any ideas or great features you would like to see in the next versions please let us know!
