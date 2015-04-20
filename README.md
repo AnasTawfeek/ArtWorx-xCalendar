@@ -154,5 +154,5 @@ Also if there is any amazing library you would like to see as display template, 
 
 [1]: http://www.eliostruyf.com/adding-configurable-settings-display-templates/
 [2]: https://twitter.com/eliostruyf
-[3]: https://github.com/AnasTawfeek/-ArtWorx-xLoader
+[3]: https://github.com/AnasTawfeek/ArtWorx-xLoader
 [4]: https://github.com/Serhioromano/bootstrap-calendar/
